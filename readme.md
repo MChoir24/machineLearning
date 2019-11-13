@@ -1,0 +1,2 @@
+gini impurity=
+gini split=
