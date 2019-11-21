@@ -106,32 +106,39 @@ class ArtificialNeuralNetwork:
 
         return predicts
 
+    def to_numeric(self, categorical):
+        num = np.zeros(categorical.shape[0])
+        for j in range(categorical.shape[0]):
+            num[j] = np.argmax(categorical[j])
+        return num
+
+    def score(self, target, predict):
+        target = self.to_numeric(target)
+        # predict = self.to_numeric(predict)
+        truth = target == predict
+        t = 0
+        f = 0
+        for i in truth:
+            if i:
+                t+=1
+            else:
+                f+=1
+        return t/truth.shape[0]
+
 
 data = load_digits()
 categorical = to_categorical(data.target)
 X_train, X_test, y_train, y_test = train_test_split(data.data, categorical, test_size=0.3, random_state=42)
 # X_train, X_test, y_train, y_test = data.data[:1000], data.data[1000:], categorical[:1000], categorical[1000:]
-data = np.array([[5.1,3.5,1.4,0.2]])
-categorical = np.array([[0,0]])
+
+# data = np.array([[5.1,3.5,1.4,0.2]])
+# categorical = np.array([[0,0]])
+
 a = ArtificialNeuralNetwork(X_train, y_train, 10, lr=0.05, hidden_layer=[64,64])
 # a = ArtificialNeuralNetwork(data, categorical, 1, lr=0.05, hidden_layer=[64,64])
-a.train()
-print(a.weights[0])
-# print('==============')
-# a.train()
-predicts = a.predict(X_test)
-clas = np.zeros(y_test.shape[0])
-for j in range(y_test.shape[0]):
-    clas[j] = np.argmax(y_test[j])
 
-# print(clas)
-truth = clas == predicts
-t = 0
-f = 0
-for i in truth:
-    if i:
-        t+=1
-    else:
-        f+=1
-print('true = ',t)
-print('false = ',f)
+a.train()
+
+predicts = a.predict(X_test)
+
+print('score = ', a.score(y_test, predicts))
