@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from keras.utils import to_categorical
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
@@ -128,6 +129,12 @@ class ArtificialNeuralNetwork:
 
 data = load_digits()
 categorical = to_categorical(data.target)
+
+img = plt.imread('img/img3.png')[:,:,0]
+flatimg = img.flatten()
+flatimg = flatimg.reshape((1,flatimg.shape[0]))
+
+
 X_train, X_test, y_train, y_test = train_test_split(data.data, categorical, test_size=0.3, random_state=42)
 # X_train, X_test, y_train, y_test = data.data[:1000], data.data[1000:], categorical[:1000], categorical[1000:]
 
@@ -140,5 +147,10 @@ a = ArtificialNeuralNetwork(X_train, y_train, 10, lr=0.05, hidden_layer=[64,64])
 a.train()
 
 predicts = a.predict(X_test)
+print(img.shape)
+print(X_test[:1].shape)
+print(flatimg.shape)
+predicts = a.predict(flatimg)
+print(predicts)
 
-print('score = ', a.score(y_test, predicts))
+# print('score = ', a.score(y_test, predicts))
