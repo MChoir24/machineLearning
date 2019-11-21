@@ -136,21 +136,15 @@ flatimg = flatimg.reshape((1,flatimg.shape[0]))
 
 
 X_train, X_test, y_train, y_test = train_test_split(data.data, categorical, test_size=0.3, random_state=42)
-# X_train, X_test, y_train, y_test = data.data[:1000], data.data[1000:], categorical[:1000], categorical[1000:]
-
-# data = np.array([[5.1,3.5,1.4,0.2]])
-# categorical = np.array([[0,0]])
 
 a = ArtificialNeuralNetwork(X_train, y_train, 10, lr=0.05, hidden_layer=[64,64])
-# a = ArtificialNeuralNetwork(data, categorical, 1, lr=0.05, hidden_layer=[64,64])
 
 a.train()
 
 predicts = a.predict(X_test)
-print(img.shape)
-print(X_test[:1].shape)
-print(flatimg.shape)
-predicts = a.predict(flatimg)
+
+# predicts = a.predict(flatimg) # menggunakan input citra
+
 print(predicts)
 
-# print('score = ', a.score(y_test, predicts))
+print('score = ', a.score(y_test, predicts))
